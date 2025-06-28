@@ -97,7 +97,7 @@ function TrackerPage() {
 
   return (
     <div className="max-w-5xl mx-auto my-5 p-5 font-sans">
-      <h2 className="text-center text-2xl font-semibold mb-5">💰 Daily Expense Tracker</h2>
+      <h2 className="text-center text-2xl font-semibold mb-5">🧾 Daily Expense Tracker</h2>
 
       <div className="flex flex-col md:flex-row gap-10">
         {/* Left Side: Form */}
