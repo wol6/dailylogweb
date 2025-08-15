@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ToDoFooter from "../../components/layouts/ToDoFooter";
 
 export default function ToDo() {
     const [tasks, setTasks] = useState([
@@ -50,7 +51,7 @@ export default function ToDo() {
 
     return (
         <div className="max-w-sm mx-auto mt-10 p-6 rounded-2xl bg-gray-50 shadow-lg">
-            <h2 className="text-center text-2xl font-bold mb-4">ToDo List</h2>
+            <h2 className="text-center text-2xl text-slate-700 font-bold mb-4">Things To Get Done✏️</h2>
 
             {/* Input + Add Button */}
             <div className="flex mb-4">
@@ -116,6 +117,7 @@ export default function ToDo() {
             <p className="text-center text-gray-500 mt-3 text-sm">
                 {tasks.filter((t) => !t.completed).length} tasks left
             </p>
+            <ToDoFooter/>
         </div>
     );
 }

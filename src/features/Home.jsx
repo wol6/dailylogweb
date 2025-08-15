@@ -43,7 +43,7 @@ function Home() {
 
             {/* Footer */}
             <footer className="mt-10 text-sm text-gray-500">
-                © 2025 My Productivity Hub
+                © 2025 My Productivity Hub • v1.0.0
             </footer>
         </div>
     );

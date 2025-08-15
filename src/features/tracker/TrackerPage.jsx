@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs'
+import ExpFooter from '../../components/layouts/ExpFooter';
 
 function TrackerPage() {
   const [logBook, setLogBook] = useState({
@@ -186,6 +187,7 @@ function TrackerPage() {
           </div>
         </div>
       </div>
+      <ExpFooter/>
     </div>
 
 
