@@ -2,34 +2,54 @@ import React, { useEffect, useState } from "react";
 import ToDoFooter from "../../components/layouts/ToDoFooter";
 
 export default function ToDo() {
-    const [tasks, setTasks] = useState([
-        // { id: 1, text: "Buy groceries", completed: false },
-    ]);
-    const [filter, setFilter] = useState("All");
+    const [tasks, setTasks] = useState([]);
+    const [taskType, setTaskType] = useState("Task");
+    const [filter, setFilter] = useState("Active");
     const [newTask, setNewTask] = useState("");
+
+    let now = new Date();
+    let dt = now.toLocaleDateString();
+
+    const typeStyles = {
+        "Task": "bg-green-100 text-green-600",
+        "Recurring Task": "bg-rose-100 text-rose-500",
+        "Habit": "bg-purple-100 text-purple-600"
+    };
+
+    const typeNotes = {
+        "Task": "One-time item to complete.",
+        "Recurring Task": "Repeats daily.",
+        "Habit": "Trackable until the 7th day after creation."
+    };
 
     const addTask = () => {
         if (newTask.trim() === "") return;
-        const updateTask = [...tasks,
-        { id: Date.now(), text: newTask.trim(), completed: false },
-        ]
-        localStorage.setItem("tasks", JSON.stringify(updateTask))
-        // setTasks(updateTask);
-        showToDoList()
+        let enDt = "";
+        if (taskType === "Habit") {
+            let habitEnd = new Date();
+            habitEnd.setDate(habitEnd.getDate() + 7); // habit lasts 7 days
+            enDt = `${habitEnd.getMonth() + 1}/${habitEnd.getDate()}/${habitEnd.getFullYear()}`;
+        }
+        const updateTask = [
+            ...tasks,
+            { id: Date.now(), text: newTask.trim(), completed: false, type: taskType, dt, enDt }
+        ];
+        localStorage.setItem("tasks", JSON.stringify(updateTask));
+        setTasks(updateTask);
         setNewTask("");
     };
 
     const toggleTask = (id) => {
         const checkedList = tasks.map((task) =>
             task.id === id ? { ...task, completed: !task.completed } : task
-        )
-        localStorage.setItem("tasks", JSON.stringify(checkedList))
+        );
+        localStorage.setItem("tasks", JSON.stringify(checkedList));
         setTasks(checkedList);
     };
 
     const deleteTask = (id) => {
-        const updatedList = tasks.filter((task) => task.id !== id)
-        localStorage.setItem("tasks",JSON.stringify(updatedList))
+        const updatedList = tasks.filter((task) => task.id !== id);
+        localStorage.setItem("tasks", JSON.stringify(updatedList));
         setTasks(updatedList);
     };
 
@@ -39,22 +59,48 @@ export default function ToDo() {
         return true;
     });
 
-    function showToDoList() {
-        const showTaskList = localStorage.getItem("tasks") || []
-        setTasks(JSON.parse(showTaskList))
-    }
-
     useEffect(() => {
-        const showTaskList = JSON.parse(localStorage.getItem("tasks")) || []
-        setTasks(showTaskList)
-    }, [])
+        let showTaskList = JSON.parse(localStorage.getItem("tasks")) || [];
+
+        // Reset recurring tasks if new day
+        showTaskList = showTaskList.map((f) => {
+            if (f.type === "Recurring Task" || f.type === "Habit" && f.dt !== dt) {
+                return { ...f, completed: false, dt };
+            }
+            return f;
+        });
+
+        // Remove habits if end date reached
+        showTaskList = showTaskList.filter((f) => !(f.type === "Habit" && f.enDt === dt));
+
+        setTasks(showTaskList);
+        localStorage.setItem("tasks", JSON.stringify(showTaskList));
+    }, []);
 
     return (
         <div className="max-w-sm mx-auto mt-10 p-6 rounded-2xl bg-gray-50 shadow-lg">
-            <h2 className="text-center text-2xl text-slate-700 font-bold mb-4">Things To Get Done✏️</h2>
+            <h2 className="text-center text-2xl text-slate-700 font-bold mb-4">Things To Get Done ✏️</h2>
+
+            {/* Task Type Buttons */}
+            <div className="flex justify-around mx-5 my-0">
+                {["Task", "Recurring Task", "Habit"].map((f) => (
+                    <div key={f} className="flex flex-col items-center">
+                        <button
+                            onClick={() => setTaskType(f)}
+                            className={`px-2 py-0.5 rounded-lg border border-gray-300 transition 
+                                ${taskType === f ? "bg-blue-500 text-white" : typeStyles[f]}`}
+                            title={typeNotes[f]}
+                        >
+                            {f}
+                        </button>
+                        <span className="text-xs text-gray-500 mt-1">{ }</span>
+                    </div>
+                ))}
+            </div>
+            <span className="text-xs text-gray-500 ml-8"><b>Note:</b> {typeNotes[taskType]}</span>
 
             {/* Input + Add Button */}
-            <div className="flex mb-4">
+            <div className="flex mb-4 mt-1">
                 <input
                     type="text"
                     placeholder="Add a new task..."
@@ -75,33 +121,45 @@ export default function ToDo() {
                 {filteredTasks.map((task) => (
                     <div
                         key={task.id}
-                        className="flex items-center justify-between p-3 rounded-lg bg-white shadow-sm"
+                        className="flex flex-col p-3 rounded-lg bg-white shadow-sm border border-gray-200"
                     >
-                        <input
-                            type="checkbox"
-                            checked={task.completed}
-                            onChange={() => toggleTask(task.id)}
-                            className="w-5 h-5"
-                        />
-                        <span
-                            className={`flex-1 ml-3 ${task.completed ? "line-through text-gray-400" : ""
-                                }`}
-                        >
-                            {task.text}
-                        </span>
-                        <button
-                            onClick={() => deleteTask(task.id)}
-                            className="text-gray-400 hover:text-red-500"
-                        >
-                            🗑
-                        </button>
+                        <div className="flex items-center">
+                            <input
+                                type="checkbox"
+                                checked={task.completed}
+                                onChange={() => toggleTask(task.id)}
+                                className="w-5 h-5"
+                            />
+                            <span
+                                className={`flex-1 ml-3 ${task.completed ? "line-through text-gray-400" : ""}`}
+                            >
+                                {task.text}
+                            </span>
+                            <span
+                                className={`ml-2 text-xs px-2 py-0.5 rounded-full ${task.type === "Task" ? "bg-green-100 text-green-600" :
+                                    task.type === "Recurring Task" ? "bg-rose-100 text-rose-500" :
+                                        "bg-purple-100 text-purple-600"
+                                    }`}
+                            >
+                                {task.type}
+                            </span>
+                            <button
+                                onClick={() => deleteTask(task.id)}
+                                className="ml-2 text-gray-400 hover:text-red-500"
+                            >
+                                🗑
+                            </button>
+                        </div>
+                        {task.type === "Habit" && (
+                            <p className="text-xs text-gray-500 mt-1">Ends on: {task.enDt}</p>
+                        )}
                     </div>
                 ))}
             </div>
 
             {/* Filter Buttons */}
             <div className="flex justify-around mt-4">
-                {["All", "Active", "Completed"].map((f) => (
+                {["Active", "Completed", "All"].map((f) => (
                     <button
                         key={f}
                         onClick={() => setFilter(f)}
@@ -117,7 +175,8 @@ export default function ToDo() {
             <p className="text-center text-gray-500 mt-3 text-sm">
                 {tasks.filter((t) => !t.completed).length} tasks left
             </p>
-            <ToDoFooter/>
+
+            <ToDoFooter />
         </div>
     );
 }
