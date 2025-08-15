@@ -45,8 +45,8 @@ export default function ToDo() {
     }
 
     useEffect(() => {
-        const showTaskList = localStorage.getItem("tasks") || []
-        setTasks(JSON.parse(showTaskList))
+        const showTaskList = JSON.parse(localStorage.getItem("tasks")) || []
+        setTasks(showTaskList)
     }, [])
 
     return (
