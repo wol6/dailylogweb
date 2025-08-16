@@ -69,14 +69,14 @@ export default function ToDo() {
 
         // Reset recurring tasks if new day
         showTaskList = showTaskList.map((f) => {
-            if (f.type === "Recurring Task" || f.type === "Habit" && f.dt !== dt) {
+            if ((f.type === "Recurring Task" || f.type === "Habit") && f.dt !== dt) {
                 return { ...f, completed: false, dt };
             }
             return f;
         });
 
         // Remove habits if end date reached
-        showTaskList = showTaskList.filter((f) => !(f.type === "Habit" && f.enDt === dt));
+        showTaskList = showTaskList.filter((f) => !(f.type === "Habit" && f.enDt < dt));
 
         setTasks(showTaskList);
         // localStorage.setItem("tasks", JSON.stringify(showTaskList));
