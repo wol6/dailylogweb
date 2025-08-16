@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ToDoFooter from "../../components/layouts/ToDoFooter";
+import Storage from "../../utils/storage";
 
 export default function ToDo() {
     const [tasks, setTasks] = useState([]);
@@ -34,7 +35,8 @@ export default function ToDo() {
             ...tasks,
             { id: Date.now(), text: newTask.trim(), completed: false, type: taskType, dt, enDt }
         ];
-        localStorage.setItem("tasks", JSON.stringify(updateTask));
+        // localStorage.setItem("tasks", JSON.stringify(updateTask));
+        Storage.set('tasks', updateTask)
         setTasks(updateTask);
         setNewTask("");
     };
@@ -43,13 +45,15 @@ export default function ToDo() {
         const checkedList = tasks.map((task) =>
             task.id === id ? { ...task, completed: !task.completed } : task
         );
-        localStorage.setItem("tasks", JSON.stringify(checkedList));
+        // localStorage.setItem("tasks", JSON.stringify(checkedList));
+        Storage.set('tasks', checkedList)
         setTasks(checkedList);
     };
 
     const deleteTask = (id) => {
         const updatedList = tasks.filter((task) => task.id !== id);
-        localStorage.setItem("tasks", JSON.stringify(updatedList));
+        // localStorage.setItem("tasks", JSON.stringify(updatedList));
+        Storage.set('tasks', updatedList)
         setTasks(updatedList);
     };
 
@@ -60,7 +64,8 @@ export default function ToDo() {
     });
 
     useEffect(() => {
-        let showTaskList = JSON.parse(localStorage.getItem("tasks")) || [];
+        // let showTaskList = JSON.parse(localStorage.getItem("tasks")) || [];
+        let showTaskList = Storage.get("tasks", []) || []
 
         // Reset recurring tasks if new day
         showTaskList = showTaskList.map((f) => {
@@ -74,7 +79,8 @@ export default function ToDo() {
         showTaskList = showTaskList.filter((f) => !(f.type === "Habit" && f.enDt === dt));
 
         setTasks(showTaskList);
-        localStorage.setItem("tasks", JSON.stringify(showTaskList));
+        // localStorage.setItem("tasks", JSON.stringify(showTaskList));
+        Storage.set('tasks', showTaskList)
     }, []);
 
     return (
