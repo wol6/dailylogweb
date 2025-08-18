@@ -2,6 +2,13 @@ import React, { useEffect, useState } from "react";
 import ToDoFooter from "../../components/layouts/ToDoFooter";
 import Storage from "../../utils/storage";
 
+export const typeStyles = {
+    "Task": "bg-green-100 text-green-600",
+    "Recurring Task": "bg-rose-100 text-rose-500",
+    "Habit": "bg-purple-100 text-purple-600"
+};
+
+
 export default function ToDo() {
     const [tasks, setTasks] = useState([]);
     const [taskType, setTaskType] = useState("Task");
@@ -10,12 +17,6 @@ export default function ToDo() {
 
     let now = new Date();
     let dt = now.toLocaleDateString();
-
-    const typeStyles = {
-        "Task": "bg-green-100 text-green-600",
-        "Recurring Task": "bg-rose-100 text-rose-500",
-        "Habit": "bg-purple-100 text-purple-600"
-    };
 
     const typeNotes = {
         "Task": "One-time item to complete.",
@@ -42,10 +43,14 @@ export default function ToDo() {
     };
 
     const toggleTask = (id) => {
+        // const proceed = confirm("You cannot undo the completed task")
+        // if (!proceed) return
         const checkedList = tasks.map((task) =>
-            task.id === id ? { ...task, completed: !task.completed } : task
+            task.id === id ? { ...task, completed: !task.completed, cdt: dt } : task
         );
-        // localStorage.setItem("tasks", JSON.stringify(checkedList));
+        const completedList = checkedList.filter((task) => task.completed);
+
+        Storage.set("completedTask", completedList);
         Storage.set('tasks', checkedList)
         setTasks(checkedList);
     };
