@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Storage from '../../utils/storage'
 import { typeStyles } from '../todo/ToDo'
+import ToDoFooter from '../../components/layouts/ToDoFooter'
 
 function ToDoOverView() {
     const [completedList, setCompletedList] = useState([])
@@ -106,6 +107,7 @@ function ToDoOverView() {
                     ))}
                 </div>
             )}
+            <ToDoFooter/>
         </div>
     )
 }
