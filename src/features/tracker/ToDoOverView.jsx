@@ -66,7 +66,7 @@ function ToDoOverView() {
                                 </h2>
 
                                 <div className="flex items-center gap-2">
-                                    {task.completedCount > 0 && (
+                                    {(task.completedCount > 0 && task.type!="Task")&& (
                                         <span
                                             className="bg-green-100 text-green-700 text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm"
                                             title="Times completed"

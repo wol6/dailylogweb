@@ -34,7 +34,7 @@ export default function ToDo() {
         }
         const updateTask = [
             ...tasks,
-            { id: Date.now(), text: newTask.trim(), completed: false, type: taskType, dt, enDt }
+            { id: Date.now(), text: newTask.trim(), completed: false, type: taskType, dt, enDt,completedCount:0 }
         ];
         // localStorage.setItem("tasks", JSON.stringify(updateTask));
         Storage.set('tasks', updateTask)
@@ -43,10 +43,11 @@ export default function ToDo() {
     };
 
     const toggleTask = (id) => {
-        // const proceed = confirm("You cannot undo the completed task")
-        // if (!proceed) return
+        const proceed = confirm("You cannot undo the completed task")
+        if (!proceed) return
         const checkedList = tasks.map((task) =>
-            task.id === id ? { ...task, completed: !task.completed, cdt: dt } : task
+            // task.id === id ? { ...task, completed: !task.completed, cdt: dt } : task
+            task.id === id ? { ...task, completed: true, cdt: dt ,completedCount:task.completedCount+1} : task
         );
         const completedList = checkedList.filter((task) => task.completed);
 
