@@ -7,13 +7,19 @@ function Home() {
             title: "Expense Tracker",
             description: "Track your daily spending with ease.",
             icon: "🪙",
-            path: "/tracker", // route to tracker
+            path: "/tracker",
         },
         {
             title: "To-Do List",
             description: "Stay on top of your tasks.",
             icon: "✏️",
-            path: "/todo", // route to todo
+            path: "/todo",
+        },
+        {
+            title: "Daily Reps",
+            description: "Log workouts, reps, and progress towards fitness goals.",
+            icon: "💪",
+            path: "/dailyrep", // route for workout tracker
         },
     ];
 
@@ -43,7 +49,8 @@ function Home() {
 
             {/* Footer */}
             <footer className="mt-10 text-sm text-gray-500">
-                © {new Date().getFullYear()} Daily•Logs <span className="text-gray-400">|</span> Version 2.0.0
+                © {new Date().getFullYear()} Daily•Logs{" "}
+                <span className="text-gray-400">|</span> Version 2.0.0
             </footer>
         </div>
     );

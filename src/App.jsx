@@ -4,6 +4,7 @@ import Home from './features/Home'
 import { Route, Routes } from 'react-router-dom'
 import ToDoDashBoard from './features/todo/ToDoDashBoard'
 import ToDoOverView from './features/tracker/ToDoOverView'
+import Workout from './features/dailyreps/WorkOut'
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
   <Route path='/todo' element={<ToDoDashBoard/>} />
   <Route path='/todo/overview' element={<ToDoOverView/>} />
   <Route path='/todo/add' element={<ToDo/>} />
+  <Route path='/dailyrep' element={<Workout/>} />
  </Routes>
     </>
   )
