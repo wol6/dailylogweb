@@ -34,7 +34,7 @@ export default function ToDo() {
         }
         const updateTask = [
             ...tasks,
-            { id: Date.now(), text: newTask.trim(), completed: false, type: taskType, dt, enDt,completedCount:0 }
+            { id: Date.now(), text: newTask.trim(), completed: false, type: taskType, dt, enDt, completedCount: 0 }
         ];
         // localStorage.setItem("tasks", JSON.stringify(updateTask));
         Storage.set('tasks', updateTask)
@@ -45,16 +45,32 @@ export default function ToDo() {
     const toggleTask = (id) => {
         const proceed = confirm("You cannot undo the completed task")
         if (!proceed) return
-        const checkedList = tasks.map((task) =>
-            // task.id === id ? { ...task, completed: !task.completed, cdt: dt } : task
-            task.id === id ? { ...task, completed: true, cdt: dt ,completedCount:task.completedCount+1} : task
-        );
-        const completedList = checkedList.filter((task) => task.completed);
 
-        Storage.set("completedTask", completedList);
-        Storage.set('tasks', checkedList)
-        setTasks(checkedList);
-    };
+        const checkedList = tasks.map((task) =>
+            task.id === id
+                ? {
+                    ...task,
+                    completed: true,
+                    cdt: dt,
+                    completedCount: (task.completedCount || 0) + 1,
+                }
+                : task
+        )
+
+        // get old completed tasks from storage
+        const oldCompleted = Storage.get("completedTask", [])
+
+        // find the newly completed one
+        const newlyCompleted = checkedList.find((task) => task.id === id)
+
+        // append it to old list
+        const updatedCompletedList = [...oldCompleted, newlyCompleted]
+
+        Storage.set("completedTask", updatedCompletedList)
+        Storage.set("tasks", checkedList)
+        setTasks(checkedList)
+    }
+
 
     const deleteTask = (id) => {
         const updatedList = tasks.filter((task) => task.id !== id);
