@@ -34,7 +34,7 @@ export default function ToDo() {
         }
         const updateTask = [
             ...tasks,
-            { id: Date.now(), text: newTask.trim(), completed: false, type: taskType, dt, enDt, completedCount: 0 }
+            { id: Date.now(), text: newTask.trim(), completed: false, type: taskType, cdt: dt, dt, enDt, completedCount: 0 }
         ];
         // localStorage.setItem("tasks", JSON.stringify(updateTask));
         Storage.set('tasks', updateTask)
@@ -57,19 +57,22 @@ export default function ToDo() {
                 : task
         )
 
-        // get old completed tasks from storage
-        const oldCompleted = Storage.get("completedTask", [])
-
-        // find the newly completed one
         const newlyCompleted = checkedList.find((task) => task.id === id)
 
-        // append it to old list
+        let oldCompleted = Storage.get("completedTask", [])
+
+        // Prevent duplicates for the same task + date
+        oldCompleted = oldCompleted.filter(
+            (t) => !(t.id === newlyCompleted.id && t.cdt === newlyCompleted.cdt)
+        )
+
         const updatedCompletedList = [...oldCompleted, newlyCompleted]
 
         Storage.set("completedTask", updatedCompletedList)
         Storage.set("tasks", checkedList)
         setTasks(checkedList)
     }
+
 
 
     const deleteTask = (id) => {

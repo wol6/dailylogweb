@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Storage from '../../utils/storage'
-import { typeStyles } from '../todo/ToDo'
+import { typeStyles } from './ToDo'
 import ToDoFooter from '../../components/layouts/ToDoFooter'
 import { Calendar, Trash2, Clock } from 'lucide-react'
 
