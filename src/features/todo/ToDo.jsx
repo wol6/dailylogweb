@@ -63,7 +63,7 @@ export default function ToDo() {
 
         // Prevent duplicates for the same task + date
         oldCompleted = oldCompleted.filter(
-            (t) => !(t.id === newlyCompleted.id && t.cdt === newlyCompleted.cdt)
+            (t) => !(t.id === newlyCompleted.id)
         )
 
         const updatedCompletedList = [...oldCompleted, newlyCompleted]
