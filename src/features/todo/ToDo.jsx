@@ -51,7 +51,7 @@ export default function ToDo() {
                 ? {
                     ...task,
                     completed: true,
-                    cdt: dt,
+                    cdt: task.dt,
                     completedCount: (task.completedCount || 0) + 1,
                 }
                 : task
