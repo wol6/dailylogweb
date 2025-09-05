@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Storage from "../../utils/storage";
 
 function DailyEventsAdd() {
   const [form, setForm] = useState({
@@ -20,7 +21,13 @@ function DailyEventsAdd() {
     const newEvent = { ...form, id: Date.now() }; // fresh unique id
     console.log("Saved Event:", newEvent);
 
-    // push to storage / backend here
+    const existingEvents = Storage.get("dailyEvents") || [];
+
+    // push new event
+    const updatedEvents = [...existingEvents, newEvent];
+
+    // save array back
+    Storage.set("dailyEvents", updatedEvents);
 
     // reset form
     setForm({ id: Date.now(), name: "", target: "", unit: "Reps" });
