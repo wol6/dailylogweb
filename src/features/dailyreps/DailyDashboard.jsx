@@ -1,16 +1,21 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { PlusCircle, LayoutDashboard } from 'lucide-react'  // modern icons
+import { PlusCircle,ListTodo , LayoutDashboard } from 'lucide-react'  // modern icons
 
 function DailyDashboard() {
     const apps = [
         {
             title: "Add Your Event",
-            description: "s",
+            description: "Create Your Event To Track Progress",
             icon: <PlusCircle className="w-6 h-6 text-blue-600" />,
             path: "/dailyrep/add", 
-        }
-    ];  
+        },
+        {
+            title: "View Event",
+            description: "Track Your Events & Check Progress",
+            icon: <ListTodo  className="w-6 h-6 text-blue-600" />,
+            path: "/dailyrep/view", 
+        }    ];  
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6 flex flex-col items-center">

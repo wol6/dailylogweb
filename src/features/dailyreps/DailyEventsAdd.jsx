@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import Storage from "../../utils/storage";
+import DaileEventFooter from "../../components/layouts/DailyEvtFooter";
 
 function DailyEventsAdd() {
   const [form, setForm] = useState({
     id: Date.now(), // auto ID
     name: "",
+    actual:"",
     target: "",
     unit: "Reps",
   });
@@ -19,7 +21,6 @@ function DailyEventsAdd() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newEvent = { ...form, id: Date.now() }; // fresh unique id
-    console.log("Saved Event:", newEvent);
 
     const existingEvents = Storage.get("dailyEvents") || [];
 
@@ -30,7 +31,7 @@ function DailyEventsAdd() {
     Storage.set("dailyEvents", updatedEvents);
 
     // reset form
-    setForm({ id: Date.now(), name: "", target: "", unit: "Reps" });
+    setForm({ id: Date.now(), name: "",actual:"", target: "", unit: "Reps" });
   };
 
   return (
@@ -52,6 +53,22 @@ function DailyEventsAdd() {
               value={form.name}
               onChange={handleChange}
               placeholder="e.g., Push-ups"
+              className="mt-1 w-full px-2 py-1.5 border rounded-md focus:ring focus:ring-blue-200 focus:border-blue-400 outline-none text-sm"
+              required
+            />
+          </div>
+          
+          {/* Actual */}
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-gray-600">
+              Actual
+            </label>
+            <input
+              type="number"
+              name="actual"
+              value={form.actual  }
+              onChange={handleChange}
+              placeholder="e.g., 50"
               className="mt-1 w-full px-2 py-1.5 border rounded-md focus:ring focus:ring-blue-200 focus:border-blue-400 outline-none text-sm"
               required
             />
@@ -101,6 +118,7 @@ function DailyEventsAdd() {
           </button>
         </form>
       </div>
+      <DaileEventFooter/>
     </div>
   );
 }
