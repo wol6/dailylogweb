@@ -9,6 +9,9 @@ import DailyEventsAdd from './features/dailyreps/DailyEventsAdd'
 import ViewEvent from './features/dailyreps/ViewEvent'
 import TrackerDashBoard from './features/tracker/TrackerDashBoard'
 import AddBook from './features/tracker/AddBook'
+import BookCategoryList from './features/tracker/BookCategoryList'
+import TrackerCalci from './features/tracker/TrackerCalci'
+import BookView from './features/tracker/BookView'
 
 function App() {
 
@@ -17,8 +20,11 @@ function App() {
  <Routes>
   <Route path='/' element={ <Home/>} />
   <Route path='/tracker' element={ <TrackerDashBoard/>} />
+  {/* <Route path='/tracker/add' element={<TrackerPage/>} /> */}
+  <Route path='/tracker/add' element={<TrackerCalci/>} />
   <Route path='/tracker/addbook' element={<AddBook/>} />
-  <Route path='/tracker/viewbook' element={<TrackerPage/>} />
+  <Route path='/tracker/viewlist' element={<BookCategoryList/>} />
+  <Route path='/tracker/viewbook/:book' element={<BookView/>} />
   <Route path='/todo' element={<ToDoDashBoard/>} />
   <Route path='/todo/overview' element={<ToDoOverView/>} />
   <Route path='/todo/add' element={<ToDo/>} />

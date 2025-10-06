@@ -6,15 +6,21 @@ function TrackerDashBoard() {
   const apps = [
     {
       title: "Add Book",
-      description: "Record your new expenses easily",
+      description: "Categories your expenses",
       icon: <PlusCircle className="w-6 h-6 text-blue-600" />,
       path: "/tracker/addbook",
+    },
+     {
+      title: "Add Xpense",
+      description: "Record your new expenses easily",
+      icon: <PlusCircle className="w-6 h-6 text-orange-600" />,
+      path: "/tracker/add",
     },
     {
       title: "My Books",
       description: "View and manage types of books",
       icon: <Wallet className="w-6 h-6 text-purple-600" />,
-      path: "/tracker/viewbook",
+      path: "/tracker/viewlist",
     },
     // {
     //   title: "Reports",

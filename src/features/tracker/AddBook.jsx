@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Storage from "../../utils/storage";
+import { Trash2 } from "lucide-react"; // for delete icon (optional)
 
 function AddBook() {
   const [bookName, setBookName] = useState("");
@@ -7,7 +8,6 @@ function AddBook() {
 
   // Load books from localStorage on mount
   useEffect(() => {
-    // const storedBooks = JSON.parse(localStorage.getItem("expenseBooks")) || {};
     const storedBooks = Storage.get("expenseBooks") || {};
     setBooks(storedBooks);
   }, []);
@@ -27,11 +27,21 @@ function AddBook() {
 
     const updatedBooks = { ...books, [trimmedName]: [] };
     setBooks(updatedBooks);
-    // localStorage.setItem("expenseBooks", JSON.stringify(updatedBooks));
-    Storage.set("expenseBooks",updatedBooks)
+    Storage.set("expenseBooks", updatedBooks);
 
     setBookName("");
     alert(`Book "${trimmedName}" added successfully!`);
+  };
+
+  // Handle book deletion
+  const handleDeleteBook = (bookKey) => {
+    const confirmDelete = window.confirm(`Are you sure you want to delete "${bookKey}"?`);
+    if (!confirmDelete) return;
+
+    const updatedBooks = { ...books };
+    delete updatedBooks[bookKey];
+    setBooks(updatedBooks);
+    Storage.set("expenseBooks", updatedBooks);
   };
 
   return (
@@ -59,7 +69,15 @@ function AddBook() {
 
       {/* Book list */}
       <div className="mt-8 w-full max-w-sm">
-        <h2 className="text-lg font-semibold text-gray-700 mb-3">My Books</h2>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-lg font-semibold text-gray-700">My Books</h2>
+          {Object.keys(books).length > 0 && (
+            <span className="text-sm text-gray-500">
+              {Object.keys(books).length} total
+            </span>
+          )}
+        </div>
+
         {Object.keys(books).length === 0 ? (
           <p className="text-gray-500 text-sm">No books added yet.</p>
         ) : (
@@ -67,9 +85,16 @@ function AddBook() {
             {Object.keys(books).map((book, idx) => (
               <li
                 key={idx}
-                className="bg-white p-3 rounded-lg shadow-sm border text-gray-700 font-medium"
+                className="bg-white p-3 rounded-lg shadow-sm border flex justify-between items-center text-gray-700 font-medium"
               >
-                {book}
+                <span>{book}</span>
+                <button
+                  onClick={() => handleDeleteBook(book)}
+                  className="text-red-500 hover:text-red-700 transition-all duration-200"
+                  title="Delete Book"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
               </li>
             ))}
           </ul>
