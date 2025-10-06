@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { PlusCircle, Wallet, BarChart3 } from 'lucide-react'  // icons for expense tracker
+import ExpFooter from '../../components/layouts/ExpFooter'
 
 function TrackerDashBoard() {
   const apps = [
@@ -54,6 +55,7 @@ function TrackerDashBoard() {
           </NavLink>
         ))}
       </div>
+      <ExpFooter/>
     </div>
   )
 }
