@@ -50,7 +50,7 @@ function Home() {
             {/* Footer */}
             <footer className="mt-10 text-sm text-gray-500">
                 © {new Date().getFullYear()} Daily•Logs{" "}
-                <span className="text-gray-400">|</span> Version 4.0.0
+                <span className="text-gray-400">|</span> Version 5.0.0
             </footer>
         </div>
     );
